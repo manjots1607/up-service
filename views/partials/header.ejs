@@ -19,3 +19,54 @@
    
 </head>
 <body>
+    <nav class="navbar  navbar-expand-lg  navbar-dark bg-dark shadow">
+    <a class="navbar-brand" href="/">Call's Manager</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav nav nav-pills ml-auto ">
+        <li class="nav-item ">
+            <a class="nav-link <% if(locals.isHome){ %> active <% } %>"  href="/">Home <span class="sr-only">(current)</span></a>
+        </li>
+        
+
+        <!--Logic to add login and logout links  -->
+        <% if(curUser){ %>
+            
+            <!--Logic for admin links....-->
+            <% if(curUserRole==="Admin"){%>
+                
+                <li class="nav-item">
+                    <a class="nav-link <% if(locals.isADashboard){ %>active<%}%>" href="/admin">Dashboard</a>    
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link <% if(locals.isACalls){ %>active<%}%>" href="/admin/calls">Manage Calls</a>    
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link <% if(locals.isACustomer){ %>active<%}%>" href="/admin/customers">Manage Customers</a>    
+                </li>
+            <%}else if(curUserRole==='Engineer'){ %>
+                <li class="nav-item">
+                    <a class="nav-link <% if(locals.isEDashboard){ %>active<%}%>" href="/engineer">Dashboard</a>    
+                </li>
+            <% }else{ %>
+                <li class="nav-item">
+                    <a class="nav-link <% if(locals.isCDashboard){ %>active<%}%>" href="/callcenter">Dashboard</a>    
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link <% if(locals.isCNewCall){ %>active<%}%>" href="/callcenter/newcall">New Call</a>    
+                </li>
+            <% } %>
+            <li class="nav-item">
+                <a class="nav-link" href="/logout">Logout</a>    
+            </li>
+        <% }else{ %>
+            <li class="nav-item">
+                <a class="nav-link <% if(locals.isLogin){ %>active<%}%>" href="/login" >Login</a>
+            </li>
+        <% } %>        
+        </ul>
+        </div>
+    </nav>

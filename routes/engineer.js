@@ -10,7 +10,7 @@ router.get("/",middleware.isEngineer,(req,res)=>{
     .populate('customer')
     .then(calls=>{
         
-        res.render("engineer/home",{calls:calls});
+        res.render("engineer/home",{calls:calls,isEDashboard:true});
     }).catch(err=>{
         console.log(err);
         res.json(err);

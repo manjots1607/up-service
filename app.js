@@ -30,6 +30,8 @@ app.use(bodyParser.urlencoded({extended:true}));
 //log curUser
 app.use(function(req,res,next){
     res.locals.title="";
+    res.locals.curUser=req.user;
+    res.locals.curUserRole=req.user?req.user.userRole:undefined;
     console.log("curUser: ",req.user?req.user.username:null);
     next();
 });

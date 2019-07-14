@@ -8,11 +8,11 @@ const middleware=require('../middleware/middleware');
 
 router.get("/",(req,res)=>{
     
-    res.render("index.ejs");
+    res.render("index.ejs",{isHome:true});
 });
 router.get("/login",(req,res)=>{
     
-    res.render("login");
+    res.render("login",{isLogin:true});
 });
 
 router.post("/login",passport.authenticate("local",{

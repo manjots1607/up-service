@@ -25,7 +25,7 @@ router.get("/",middleware.isCallCenter,(req,res)=>{
             }
 
         });
-        return res.render("callCenter/callcenter.ejs",{callData:callData});
+        return res.render("callCenter/callcenter.ejs",{callData:callData,isCDashboard:true});
     })
     .catch(err=>{
         console.log(err);
@@ -36,7 +36,7 @@ router.get("/",middleware.isCallCenter,(req,res)=>{
 router.get("/newcall",middleware.isCallCenter,(req,res)=>{
     db.CallType.find()
     .then(CallTypes=>{
-        res.render("callCenter/newCall.ejs",{CallTypes:CallTypes});
+        res.render("callCenter/newCall.ejs",{CallTypes:CallTypes,isCNewCall:true});
     })
     .catch(err=>{
         res.send(err);

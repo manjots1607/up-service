@@ -11,7 +11,7 @@ router.get("/",middleware.isAdmin,(req,res)=>{
     .then((engineers)=>{
         db.User.find({userRole:userRole.CallCenterExec})
         .then((CallCenterExecs)=>{
-            res.render("admin.ejs",{title:"Admin Home",userRole:userRole,engineers:engineers,CallCenterExecs:CallCenterExecs});
+            res.render("admin.ejs",{title:"Admin Home",userRole:userRole,engineers:engineers,CallCenterExecs:CallCenterExecs,isADashboard:true});
         })
         .catch((err)=>{
             console.log(err);
@@ -28,7 +28,7 @@ router.get("/customers",middleware.isAdmin,(req,res)=>{
     console.log(req.originalUrl);
     db.Customer.find()
     .then((customers)=>{
-        res.render("manageCustomers.ejs",{customers:customers});
+        res.render("manageCustomers.ejs",{customers:customers,isACustomer:true});
     })
     .catch(err=>{
         console.log(err);
@@ -39,7 +39,7 @@ router.get("/customers",middleware.isAdmin,(req,res)=>{
 router.get("/calls",middleware.isAdmin,(req,res)=>{
     db.CallType.find()
     .then(callTypes=>{
-        res.render("manageCall.ejs",{callTypes:callTypes});
+        res.render("manageCall.ejs",{callTypes:callTypes,isACalls:true});
     })
     .catch(err=>{
         console.log(err);
