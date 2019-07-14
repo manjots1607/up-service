@@ -1,0 +1,10 @@
+<% include ../partials/header %>
+    <h1>Call Center Home</h1>
+    <div style="border:2px solid black;padding:20px">
+            <h2> Total calls atended: <strong><%= callData.total %></strong></h2>
+            <h2> Total calls closed: <strong> <%= callData.closed%> </strong></h2>
+            <h2> Total calls passed: <strong> <%= callData.passed%></strong></h2>
+    </div>
+    <a href="/callcenter/newcall"> Handle New Call </a>
+    </body>
+</html>

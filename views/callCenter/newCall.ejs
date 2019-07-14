@@ -1,0 +1,171 @@
+<% include ../partials/header %>
+    
+    <div style="border:2px solid black;padding:20px">
+            <h1>Create New Call</h1>
+            <hr>
+            <div>
+                <h3>Search Customers:- </h3>
+                <div> Search by email <input type="email" name="email" placeholder="Enter email" id="searchemail" onkeyup="searchCustomer(event)" />  </div>
+                <div> Search by MobileNo <input type="text" pattern="[1-9]{1}[0-9]{9}" name="mobNo" id="searchMobNo" onkeyup="searchCustomer(event)" placeholder="Enter your mobile no." />  </div>
+                <div> Search by Name <input type="text"  name="name" onkeyup="searchCustomer(event)" placeholder="Enter your name " />  </div>
+            </div>
+            <div id="srchEngineer">
+                
+            </div>
+            <div>
+                <h3>Create New Customer:- </h3>
+                <form method="post" action="/customer" onSubmit="newCustomer(event)" id="newCustomerForm">
+                
+                    <div style="margin-bottom: 5px"><input type="email" name="email" placeholder="Enter Email" /></div>                    
+                    <div style="margin-bottom: 5px"><input type="text"  name="name" placeholder="Enter your full name" /></div>                    
+                    <div style="margin-bottom: 5px"><input type="text" pattern="[1-9]{1}[0-9]{9}" name="mobNo" placeholder="Enter your mobile no." /></div>                                                      
+                    <div style="margin-bottom: 5px">
+                        <select name="customerType">
+                            <option value="New Customer">New Customer</option>
+                            <option value="Old Customer">Old Customer</option>
+                            
+                        </select>
+                    </div> 
+    
+                    <button>Submit</button>                   
+                </form>
+            </div>
+            <hr>
+            <h3>Main Form</h3>
+            <form method="post" action="/callcenter/newCall" id="newCallForm">
+                <div>
+                    <label> Select Call Type      
+                    <select name="callType">
+                        <% CallTypes.forEach(CallType=>{ %>
+                         <option value="<%= CallType._id %>"><%= CallType.callType %></option>
+                         
+                        <% }) %>
+                    </select>
+                    
+                    </label>
+                </div>
+                <div>
+                    <label> Select Customer Email id
+                        <select id="customerEmail" name="customer">
+
+                        </select>
+                    </label>
+                </div> 
+                <div><label>Enter Demand <textarea name="demand"></textarea> </label></div>
+                <div><label>Select Type</label>
+                    <input type="radio" name="mode" value="passed" />Passed
+                    <input type="radio" name="mode" value="closed" />Closed
+                </div>
+                <div id="selectEngi"></div>
+
+                <button>Submit</button>                   
+            </form>
+
+    
+        </div>
+    <script>
+        function searchCustomer(e){
+            console.log("You Searched Customer!!!" ,e.target.value);
+            var data={};
+            if(e.target.name==="email"){
+                data.email=e.target.value;
+            }else if(e.target.name==="name"){
+                data.name=e.target.value;
+            }else if(e.target.name==="mobNo"){
+                data.mobNo=e.target.value;
+            }
+           
+            if((e.keycode||e.which)===13){
+                $.post("/api/customer/search",data)
+                .done(d=>{
+                    addCustomers(d);
+                })
+                .fail(err=>{
+                    console.log(err);
+                });
+            }
+        
+        }
+        function searchEngineer(e){
+            console.log("You Searched Engineer!!!" ,e.target.value);
+            var data={};
+            if(e.target.name==="email"){
+                data.email=e.target.value;
+            }else if(e.target.name==="name"){
+                data.name=e.target.value;
+            }else if(e.target.name==="mobNo"){
+                data.mobNo=e.target.value;
+            }
+           
+            if((e.keycode||e.which)===13){
+                $.post("/api/searchengineer",data)
+                .done(d=>{
+                    addEngineer(d);
+                })
+                .fail(err=>{
+                    console.log(err);
+                });
+            }
+        
+        }
+        function addEngineer(data){
+            
+            console.log(data);
+            $("#engEmail").html("");
+            data.forEach(c=>{
+                $("#engEmail").append(`<option value='${c._id}'> ${c.username}</option>`);
+            });
+        }
+        function addCustomers(data){
+            
+            console.log(data);
+            $("#customerEmail").html("");
+            data.forEach(c=>{
+                $("#customerEmail").append(`<option value='${c._id}'> ${c.email}</option>`);
+            });
+        }
+        function newCustomer(e){
+            e.preventDefault();
+            
+            const newc = {
+                name:$("#newCustomerForm div input[name='name']").val(),
+                email:$("#newCustomerForm div input[name='email']").val(),
+                mobNo:$("#newCustomerForm div input[name='mobNo']").val(),
+                customerType:$("#newCustomerForm div select[name='customerType']").val(),
+                api:true
+
+            };
+            $.post("/customer",newc)
+            .done(d=>{
+                const arr=[];
+                arr.push(d);
+                addCustomers(arr);
+            })
+            .fail(err=>{
+                console.log(err);
+            });
+
+        }
+        function addEngField(){
+            $("#selectEngi").prepend("<div id='selectEng'><label>Select Engineer <select id='engEmail' name='engineer' ></select></label></div>")
+            $('#srchEngineer').append("<div id='srchEng'> <h3>Search Engineers:- </h3> <div> Search by email <input type='email' name='email' placeholder='Enter email' id='searchemail' onkeyup='searchEngineer(event)' />  </div>  <div> Search by MobileNo <input type='text' pattern='[1-9]{1}[0-9]{9}' name='mobNo' id='searchMobNo' onkeyup='searchEngineer(event)' placeholder='Enter your mobile no.' />  </div> <div> Search by Name <input type='text'  name='name' onkeyup='searchEngineer(event)' placeholder='Enter your name'  />  </div> </div>")
+        }
+        function removeEngField(){
+            $("#selectEng").remove();
+            $('#srchEng').remove();
+        }
+        $(document).ready(function () {
+            $("input[name='mode']").change((e)=>{
+                console.log("change trigger",e.target.value);
+                if(e.target.value === "passed"){
+                    console.log("add trigger");
+                    addEngField();
+                }
+                else{
+                    removeEngField();
+                }
+            });
+        })
+    </script>
+    </body>
+</html>

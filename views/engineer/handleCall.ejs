@@ -1,0 +1,91 @@
+<% include ../partials/header %>
+    <h1>Handle Call from <%= call.customer.name %></h1>
+    <div style="border:2px solid black;margin-bottom:10px;padding:15px" id="maindiv" userid="<%=call.passedTo%>">
+        <h2>Call Details</h2>
+        <ul>
+            <li><b>Recieved On </b><%=call.createdAt%></li>
+            <li><b>Demand:- </b><%= call.demand %> </li>
+            <li><b> Picked By: <%= call.createdBy.username %> </b></li>
+        </ul>
+    </div>
+    <div style="border:2px solid black;margin-bottom:10px;padding:15px">
+        <h2>Customer Details</h2>
+        <ul>
+            <li><b> Name :</b><%=call.customer.name%></li>
+            <li><b> Mobile No. : </b><%= call.customer.mobNo %> </li>
+            <li><b> Email : <%= call.customer.email %> </b></li>
+            <li><b> Customer Type  : <%= call.customer.customerType %> </b></li>
+        </ul>
+    </div>
+    <div style="border:2px solid black;margin-bottom:10px;padding:15px">
+        <h2>Handle Call </h2>
+        <div id="srchEngineer"> </div>
+        <form action="/engineer/call/<%=call._id%>/update" method="post">
+            <div><label>Select Operation </label>
+                    <input type="radio" name="mode" value="passed" />Passed
+                    <input type="radio" name="mode" value="closed" />Closed
+                </div>
+            <div id="selectEngi"></div>
+            <button>Submit</button>
+        </form>
+    </div>
+
+    <script>
+        function searchEngineer(e){
+            console.log("You Searched Engineer!!!" ,e.target.value);
+            var data={};
+            if(e.target.name==="email"){
+                data.email=e.target.value;
+            }else if(e.target.name==="name"){
+                data.name=e.target.value;
+            }else if(e.target.name==="mobNo"){
+                data.mobNo=e.target.value;
+            }
+           
+            if((e.keycode||e.which)===13){
+                $.post("/api/searchengineer",data)
+                .done(d=>{
+                    addEngineer(d);
+                })
+                .fail(err=>{
+                    console.log(err);
+                });
+            }
+        
+        }
+        function addEngineer(data){
+            
+            
+            $("#engEmail").html("");
+            
+            data.forEach(c=>{
+                if(!(c._id===$("#maindiv").attr("userid"))){
+                    
+                    $("#engEmail").append(`<option value='${c._id}'> ${c.username}</option>`);
+                }
+            });
+        }
+         function addEngField(){
+            $("#selectEngi").prepend("<div id='selectEng'><label>Select Engineer <select id='engEmail' name='engineer' ></select></label></div>")
+            $('#srchEngineer').append("<div id='srchEng'> <h3>Search Engineers:- </h3> <div> Search by email <input type='email' name='email' placeholder='Enter email' id='searchemail' onkeyup='searchEngineer(event)' />  </div>  <div> Search by MobileNo <input type='text' pattern='[1-9]{1}[0-9]{9}' name='mobNo' id='searchMobNo' onkeyup='searchEngineer(event)' placeholder='Enter your mobile no.' />  </div> <div> Search by Name <input type='text'  name='name' onkeyup='searchEngineer(event)' placeholder='Enter your name'  />  </div> <hr /></div>")
+        }
+        function removeEngField(){
+            $("#selectEng").remove();
+            $('#srchEng').remove();
+        }
+        $(document).ready(function () {
+            $("input[name='mode']").change((e)=>{
+                console.log("change trigger",e.target.value);
+                if(e.target.value === "passed"){
+                    console.log("add trigger");
+                    addEngField();
+                }
+                else{
+                    removeEngField();
+                }
+            });
+        });
+    </script>
+    
+</body>
+</html>

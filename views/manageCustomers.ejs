@@ -1,0 +1,32 @@
+<% include partials/header %>
+    <h1>Manage Customers</h1>
+    <div style="border:2px solid black">
+        <h2> Customer List </h2>
+        <ol>
+            <% customers.forEach((customer)=>{ %>
+            <li><b> <%= customer.name %>: </b> email: <b> <%= customer.email %></b> Mobile No.:- <b><%= customer.mobNo %></b> </li>
+            <% })%>
+        </ol>
+
+    </div>
+    <div style="border:2px solid black;padding:20px">
+            <h2> Create New Customer</h2>
+            <form method="post" action="/customer" >
+                
+                <div style="margin-bottom: 5px"><input type="email" name="email" placeholder="Enter Email" /></div>                    
+                <div style="margin-bottom: 5px"><input type="text"  name="name" placeholder="Enter your full name" /></div>                    
+                <div style="margin-bottom: 5px"><input type="text" pattern="[1-9]{1}[0-9]{9}" name="mobNo" placeholder="Enter your mobile no." /></div>                                                      
+                <div style="margin-bottom: 5px">
+                    <select name="customerType">
+                        <option value="New Customer">New Customer</option>
+                        <option value="Old Customer">Old Customer</option>
+                        
+                    </select>
+                </div> 
+
+                <button>Submit</button>                   
+            </form>
+    
+        </div>
+    </body>
+</html>

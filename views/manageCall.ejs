@@ -1,0 +1,25 @@
+<% include partials/header %>
+    <h1>Manage Calls</h1>
+    <div style="border:2px solid black">
+        <h2> Call Types </h2>
+        <ol>
+            <% callTypes.forEach((callType)=>{ %>
+            <li><b> <%= callType.callType %> </b> </li>
+            <% })%>
+        </ol>
+
+    </div>
+    <div style="border:2px solid black;padding:20px">
+            <h2> Create New Call Type</h2>
+            <form method="post" action="/admin/calls/callType" >
+                
+                                    
+                <div style="margin-bottom: 5px"><input type="text"  name="callType" placeholder="Enter new callType: " /></div>                    
+               
+
+                <button>Submit</button>                   
+            </form>
+    
+        </div>
+    </body>
+</html>

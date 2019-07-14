@@ -1,0 +1,41 @@
+<% include ./partials/header %>
+    <h1>ADMIN HOME</h1>
+    <div style="border:2px solid black;margin-bottom:10px">
+        <h2> Engineers List </h2>
+        <ol>
+            <% engineers.forEach((engineer)=>{ %>
+            <li><b> <%= engineer.name %>: </b> username: <b> <%= engineer.username %></b> </li>
+            <% })%>
+        </ol>
+
+    </div>
+    <div style="border:2px solid black;margin-bottom:10px">
+        <h2> Call Center Exec's List </h2>
+        <ol>
+            <% CallCenterExecs.forEach((CallCenterExec)=>{ %>
+            <li><b> <%= CallCenterExec.name %>: </b> username: <b> <%= CallCenterExec.username %></b> </li>
+            <% })%>
+        </ol>
+
+    </div>
+    <div style="border:2px solid black;padding:20px">
+            <h2> Create New User</h2>
+            <form method="post" action="/register" >
+                
+                <div style="margin-bottom: 5px"><input type="email" name="username" placeholder="Enter Email" /></div>                    
+                <div style="margin-bottom: 5px"><input type="text" name="name" placeholder="Enter your full name" /></div>                    
+                <div style="margin-bottom: 5px"><input type="text"  name="mobileNo" placeholder="Enter your mobile no." /></div>                    
+                <div style="margin-bottom: 5px"><input type="password" name="password" placeholder="Enter password" /></div> 
+                <div style="margin-bottom: 5px">
+                    <select name="userRole">
+                        <option value="<%= userRole.CallCenterExec %>" ><%= userRole.CallCenterExec %></option>
+                        <option value="<%= userRole.Engineer %>" ><%= userRole.Engineer %></option>
+                    </select>
+                </div> 
+
+                <button>Submit</button>                   
+            </form>
+    
+        </div>
+    </body>
+</html>
