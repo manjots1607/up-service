@@ -26,6 +26,7 @@ passport.serializeUser(db.User.serializeUser());
 passport.deserializeUser(db.User.deserializeUser());
 
 app.use(bodyParser.urlencoded({extended:true}));
+app.use(express.static(__dirname+"/public"));
 
 //log curUser
 app.use(function(req,res,next){

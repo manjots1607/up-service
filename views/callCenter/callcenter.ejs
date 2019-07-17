@@ -1,10 +1,114 @@
 <% include ../partials/header %>
-    <h1>Call Center Home</h1>
-    <div style="border:2px solid black;padding:20px">
-            <h2> Total calls atended: <strong><%= callData.total %></strong></h2>
-            <h2> Total calls closed: <strong> <%= callData.closed%> </strong></h2>
-            <h2> Total calls passed: <strong> <%= callData.passed%></strong></h2>
+    <div class="container py-5">
+    <div class="row">
+
+        <!-- For demo purpose -->
+        <div class="col-lg-12 mx-auto mb-5  text-center">
+            <h1 class="display-4"><%= curUser.name%>'s Dashboard</h1>
+            <p class="lead mb-0">Place where you can see all stats related to calls handeled by you.</p>
+            
+        
+        </div>
+        <!-- END -->
+
+        <div class="col-xl-3 col-lg-6 mb-4">
+        <div class="bg-white rounded-lg p-5 shadow-drk">
+            <h2 class="h4 font-weight-bold text-center mb-4">Total Calls Attended</h2>
+
+            <div class=" mx-auto text-center" style="width:150px;height:150px">
+                <h2 class="display-2 "><%= callData.total%></h2>
+            </div>
+
+           
+        </div>
+        </div>
+
+        <div class="col-xl-3 col-lg-6 mb-4">
+        <div class="bg-white rounded-lg p-5 shadow-drk">
+            <h2 class="h4 font-weight-bold text-center mb-4">Total Calls Closed</h2>
+
+            <!-- Progress bar 2 -->
+            <div class="progress mx-auto" data-value='<%=Math.round(callData.closed/callData.total * 100) %>'>
+            <span class="progress-left">
+                            <span class="progress-bar border-success"></span>
+            </span>
+            <span class="progress-right">
+                            <span class="progress-bar border-success"></span>
+            </span>
+            <div class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
+                <div class="display-2 "><%=callData.closed%></div>
+            </div>
+            </div>
+            <!-- END -->
+
+           
+        </div>
+        </div>
+        <div class="col-xl-3 col-lg-6 mb-4">
+        <div class="bg-white rounded-lg p-5 shadow-drk">
+            <h2 class="h4 font-weight-bold text-center mb-4">Total Calls Passed</h2>
+
+            <!-- Progress bar 2 -->
+            <div class="progress mx-auto" data-value='<%=Math.round(callData.passed/callData.total * 100) %>'>
+            <span class="progress-left">
+                            <span class="progress-bar border-primary"></span>
+            </span>
+            <span class="progress-right">
+                            <span class="progress-bar border-primary"></span>
+            </span>
+            <div class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
+                <div class="display-4 "><%=callData.passed%></div>
+            </div>
+            </div>
+            <!-- END -->
+
+            
+        </div>
+        </div>
+
+        
     </div>
-    <a href="/callcenter/newcall"> Handle New Call </a>
+    </div>
+    <div class="banner row mr-0 ml-0 mb-5">
+        
+            <div class="col-6"></div>
+            <div class="col-6 ">
+                <div class="banner-info">
+                <h2> You Are having New Call?</h2>
+                <a href="/callcenter/newcall" class="btn btn-danger"> Attend Call </a>
+                </div>
+            </div>
+        
+
+    </div>
+    
     </body>
+    <script>
+        $(function() {
+
+        $(".progress").each(function() {
+
+            var value = $(this).attr('data-value');
+            var left = $(this).find('.progress-left .progress-bar');
+            var right = $(this).find('.progress-right .progress-bar');
+
+            if (value > 0) {
+            if (value <= 50) {
+                right.css('transform', 'rotate(' + percentageToDegrees(value) + 'deg)')
+            } else {
+                right.css('transform', 'rotate(180deg)')
+                left.css('transform', 'rotate(' + percentageToDegrees(value - 50) + 'deg)')
+            }
+            }
+
+        })
+
+        function percentageToDegrees(percentage) {
+
+            return percentage / 100 * 360
+
+        }
+
+        });
+    </script>
 </html>
