@@ -1,41 +1,177 @@
 <% include ./partials/header %>
-    <h1>ADMIN HOME</h1>
-    <div style="border:2px solid black;margin-bottom:10px">
-        <h2> Engineers List </h2>
-        <ol>
-            <% engineers.forEach((engineer)=>{ %>
-            <li><b> <%= engineer.name %>: </b> username: <b> <%= engineer.username %></b> </li>
-            <% })%>
-        </ol>
-
-    </div>
-    <div style="border:2px solid black;margin-bottom:10px">
-        <h2> Call Center Exec's List </h2>
-        <ol>
-            <% CallCenterExecs.forEach((CallCenterExec)=>{ %>
-            <li><b> <%= CallCenterExec.name %>: </b> username: <b> <%= CallCenterExec.username %></b> </li>
-            <% })%>
-        </ol>
-
-    </div>
-    <div style="border:2px solid black;padding:20px">
-            <h2> Create New User</h2>
-            <form method="post" action="/register" >
-                
-                <div style="margin-bottom: 5px"><input type="email" name="username" placeholder="Enter Email" /></div>                    
-                <div style="margin-bottom: 5px"><input type="text" name="name" placeholder="Enter your full name" /></div>                    
-                <div style="margin-bottom: 5px"><input type="text"  name="mobileNo" placeholder="Enter your mobile no." /></div>                    
-                <div style="margin-bottom: 5px"><input type="password" name="password" placeholder="Enter password" /></div> 
-                <div style="margin-bottom: 5px">
-                    <select name="userRole">
-                        <option value="<%= userRole.CallCenterExec %>" ><%= userRole.CallCenterExec %></option>
-                        <option value="<%= userRole.Engineer %>" ><%= userRole.Engineer %></option>
-                    </select>
-                </div> 
-
-                <button>Submit</button>                   
-            </form>
-    
+    <div class="container py-5">
+    <div class="row">
+        <div class="col-lg-12 mx-auto mb-5  text-center">
+            <h1 class="display-4">Admin's Home</h1>
+            
         </div>
+        <div class="col-xl-2"></div>
+        <div class="col-xl-4 col-lg-6 mb-5">
+            <div class="card shadow-drk" style="height:100%;">
+                <div class="card-header "><img class="pending-call-card-img bg-primary" src="https://previews.123rf.com/images/yupiramos/yupiramos1609/yupiramos160911402/62900943-avatar-man-cartoon-hacker-digital-criminal-wearing-gray-hoodie-and-black-glasses-using-a-laptop-comp.jpg"></div>
+                <div class="card-body">
+                    
+                    <h2 class="card-title text-center ">No. of Engineers </h2>
+                       
+                    <div class="card-body text-center pl-0 ">
+                        <h4 class="display-2 mb-2 "><%=engineers.length%></h4>
+                       
+                        <button class="btn  btn-outline-primary" data-toggle="modal" data-target="#engineerList" >View List </button>
+                    </div>
+                    
+                    
+                </div>
+                <div class="card-footer  bg-primary"></div>
+            </div>
+        </div>
+        <div class="col-xl-4 col-lg-6 mb-5">
+            <div class="card shadow-drk" style="height:100%;">
+                <div class="card-header "><img class="pending-call-card-img bg-primary" src="https://previews.123rf.com/images/yupiramos/yupiramos1609/yupiramos160911402/62900943-avatar-man-cartoon-hacker-digital-criminal-wearing-gray-hoodie-and-black-glasses-using-a-laptop-comp.jpg"></div>
+                <div class="card-body">
+                    
+                    <h2 class="card-title text-center ">No. of Call Center Executives </h2>
+                       
+                    <div class="card-body text-center pl-0 ">
+                        <h4 class="display-2 mb-2 "><%=CallCenterExecs.length%></h4>
+                       
+                        <button class="btn  btn-outline-primary" data-toggle="modal" data-target="#callCenterList" >View List </button>
+                    </div>
+                    
+                    
+                </div>
+                <div class="card-footer  bg-primary"></div>
+            </div>
+        </div>
+    </div>
+    <div class="row  mb-5">
+        <div class="col-lg-3"></div>
+        <div class="col-lg-6">
+            <div class="card p-4 text-center shadow-drk" style="background-color:#f1f1f1;border:none" >
+                <h2>Create New User</h2>
+                <div class="card-body">
+                    <form action="/register" method="POST">
+                        <div class="form-group input-group">
+                            <div class="input-group-prepend bg-primary text-white pl-3 pr-3 pt-2" style="font-size:20px"><i class="fa fa-envelope" ></i></div>
+                            <input type="email" name="username" placeholder="Enter Username/Email" class="form-control" required/>
+                        </div>
+                        <div class="form-group input-group">
+                            <div class="input-group-prepend bg-primary text-white pl-3 pr-3 pt-2" style="font-size:20px"><i class="fas fa-user" ></i></div>
+                            <input type="text" name="name" class="form-control" placeholder="Enter  full name" required />
+                        </div>
+                        <div class="form-group input-group">
+                            <div class="input-group-prepend bg-primary text-white pl-3 pr-3 pt-2" style="font-size:20px"><i class="fas fa-phone-alt" ></i></div>
+                            <input type="text"  name="mobileNo" placeholder="Enter mobile no." class="form-control" pattern="[1-9]{1}[0-9]{9}" required />
+                        </div>
+                        <div class="form-group input-group">
+                            <div class="input-group-prepend bg-primary text-white pl-3 pr-3 pt-2" style="font-size:20px"><i class="fas fa-user" ></i></div>
+                            <select name="userRole" class="form-control">
+                                <option value="<%= userRole.CallCenterExec %>" ><%= userRole.CallCenterExec %></option>
+                                <option value="<%= userRole.Engineer %>" ><%= userRole.Engineer %></option>
+                            </select>
+                        </div>
+                        <div class="form-group input-group">
+                            <div class="input-group-prepend bg-primary text-white pl-3 pr-3 pt-2" style="font-size:20px"><i class="fa fa-key" ></i></div>
+                            <input type="password" name="password" placeholder="Enter password" class="form-control" required />
+                        </div>
+                        <button class="btn btn-outline-primary"> Create</button>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3"></div>
+    </div>
+    </div>
+    
+    
+    
+    <div class="modal fade center"  id="engineerList" tabindex="-1" role="dialog" aria-labelledby="srchCustomerLabel"
+    aria-hidden="true">
+        <div class="modal-dialog" style="min-width:80%;" role="document">
+            <div class="modal-content">
+                <div class="modal-header mb-4">
+                    <h5 class="modal-title" id="srchCustomerLabel">Engineer List</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <% engineers.forEach((engineer)=>{ %>
+                        <div class="col-lg-4 mb-4">
+                            
+                            <div class="card shadow-drk">
+                                <div class="card-header "><img class="pending-call-card-img bg-primary" src="https://previews.123rf.com/images/yupiramos/yupiramos1609/yupiramos160911402/62900943-avatar-man-cartoon-hacker-digital-criminal-wearing-gray-hoodie-and-black-glasses-using-a-laptop-comp.jpg"></div>
+                                <div class="card-body">
+                                    
+                                    <h2 class="card-title "><%= engineer.name %></h2>
+                                    
+                                    <div class="card-body pl-0 ">
+                                        <h6> <i style="font-size:24px; position:relative; top:5px;" class="fas fa-envelope text-primary"></i> <%= engineer.username %> </h6>        
+                                        <h6> <i style="font-size:24px; position:relative; top:5px;" class="fas fa-phone-alt text-primary"></i> <%= engineer.mobileNo %> </h6>        
+                                    </div>
+                                    
+                                    
+                                </div>
+                                <div class="card-footer  bg-primary"></div>
+                            </div>
+                            
+                        </div>
+                        <% })%>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="closeSrchEngineer"
+                        data-dismiss="modal">Close</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade center"  id="callCenterList" tabindex="-1" role="dialog" aria-labelledby="srchCustomerLabel"
+    aria-hidden="true">
+        <div class="modal-dialog" style="min-width:80%;" role="document">
+            <div class="modal-content">
+                <div class="modal-header mb-4">
+                    <h5 class="modal-title" id="srchCustomerLabel">Call Center Executives List</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <% CallCenterExecs.forEach((CallCenterExec)=>{ %>
+                        <div class="col-lg-4 mb-4">
+                            
+                            <div class="card shadow-drk" >
+                                <div class="card-header "><img class="pending-call-card-img bg-primary" src="https://previews.123rf.com/images/yupiramos/yupiramos1609/yupiramos160911402/62900943-avatar-man-cartoon-hacker-digital-criminal-wearing-gray-hoodie-and-black-glasses-using-a-laptop-comp.jpg"></div>
+                                <div class="card-body">
+                                    
+                                    <h2 class="card-title "><%= CallCenterExec.name %></h2>
+                                    
+                                    <div class="card-body pl-0 ">
+                                        <h6> <i style="font-size:24px; position:relative; top:5px;" class="fas fa-envelope text-primary"></i> <%= CallCenterExec.username %> </h6>        
+                                        <h6> <i style="font-size:24px; position:relative; top:5px;" class="fas fa-phone-alt text-primary"></i> <%= CallCenterExec.mobileNo %> </h6>        
+                                    </div>
+                                    
+                                    
+                                </div>
+                                <div class="card-footer  bg-primary"></div>
+                            </div>
+                            
+                        </div>
+                        <% })%>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="closeSrchEngineer"
+                        data-dismiss="modal">Close</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
     </body>
 </html>

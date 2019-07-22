@@ -1,32 +1,110 @@
 <% include partials/header %>
-    <h1>Manage Customers</h1>
-    <div style="border:2px solid black">
-        <h2> Customer List </h2>
-        <ol>
-            <% customers.forEach((customer)=>{ %>
-            <li><b> <%= customer.name %>: </b> email: <b> <%= customer.email %></b> Mobile No.:- <b><%= customer.mobNo %></b> </li>
-            <% })%>
-        </ol>
-
+    <div class="container py-5">
+    <div class="row mb-5">
+        <div class="col-lg-12 mx-auto mb-5  text-center">
+            <h1 class="display-4">Manage Customers</h1>
+        </div>
+        <div class="col-xl-4 col-lg-3"></div>
+        <div class="col-xl-4 col-lg-6">
+            <div class="card shadow-drk" style="height:100%;">
+                <div class="card-header "><img class="pending-call-card-img bg-primary" src="/image/user.png"></div>
+                <div class="card-body">
+                    
+                    <h2 class="card-title text-center ">No. of Customers </h2>
+                       
+                    <div class="card-body text-center pl-0 ">
+                        <h4 class="display-2 mb-2 "><%=customers.length%></h4>
+                       
+                        <button class="btn  btn-outline-primary" data-toggle="modal" data-target="#customerList" >View Customers List </button>
+                    </div>
+                    
+                    
+                </div>
+                <div class="card-footer  bg-primary"></div>
+            </div>
+        </div>
+        <div class="col-xl-4 col-lg-3"></div>
     </div>
-    <div style="border:2px solid black;padding:20px">
-            <h2> Create New Customer</h2>
-            <form method="post" action="/customer" >
-                
-                <div style="margin-bottom: 5px"><input type="email" name="email" placeholder="Enter Email" /></div>                    
-                <div style="margin-bottom: 5px"><input type="text"  name="name" placeholder="Enter your full name" /></div>                    
-                <div style="margin-bottom: 5px"><input type="text" pattern="[1-9]{1}[0-9]{9}" name="mobNo" placeholder="Enter your mobile no." /></div>                                                      
-                <div style="margin-bottom: 5px">
-                    <select name="customerType">
-                        <option value="New Customer">New Customer</option>
-                        <option value="Old Customer">Old Customer</option>
+    <div class="row  mb-5">
+        <div class="col-lg-3"></div>
+        <div class="col-lg-6">
+            <div class="card p-4 text-center shadow-drk" style="background-color:#f1f1f1;border:none" >
+                <h2>Create New Customer</h2>
+                <div class="card-body">
+                    <form action="/customer" method="POST">
+                        <div class="form-group input-group">
+                            <div class="input-group-prepend bg-primary text-white pl-3 pr-3 pt-2" style="font-size:20px"><i class="fa fa-envelope" ></i></div>
+                            <input type="email" name="email" placeholder="Enter Email" class="form-control" required/>
+                        </div>
+                        <div class="form-group input-group">
+                            <div class="input-group-prepend bg-primary text-white pl-3 pr-3 pt-2" style="font-size:20px"><i class="fas fa-user" ></i></div>
+                            <input type="text" name="name" class="form-control" placeholder="Enter  full name" required />
+                        </div>
+                        <div class="form-group input-group">
+                            <div class="input-group-prepend bg-primary text-white pl-3 pr-3 pt-2" style="font-size:20px"><i class="fas fa-phone-alt" ></i></div>
+                            <input type="text"  name="mobNo" placeholder="Enter mobile no." class="form-control" pattern="[1-9]{1}[0-9]{9}" required />
+                        </div>
+                        <div class="form-group input-group">
+                            <div class="input-group-prepend bg-primary text-white pl-3 pr-3 pt-2" style="font-size:20px"><i class="fas fa-user" ></i></div>
+                            <select name="customerType" class="form-control">
+                                <option value="New Customer">New Customer</option>
+                                <option value="Old Customer">Old Customer</option>
+                            </select>
+                        </div>
                         
-                    </select>
-                </div> 
+                        <button class="btn btn-outline-primary"> Create </button>
 
-                <button>Submit</button>                   
-            </form>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3"></div>
+    </div>
+    </div>
     
+        <div class="modal fade center"  id="customerList" tabindex="-1" role="dialog" aria-labelledby="srchCustomerLabel"
+    aria-hidden="true">
+        <div class="modal-dialog" style="min-width:80%;" role="document">
+            <div class="modal-content">
+                <div class="modal-header mb-4">
+                    <h5 class="modal-title" id="srchCustomerLabel">Customer List</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <% customers.forEach((customer)=>{ %>
+                        <div class="col-lg-4 mb-4">
+                            
+                            <div class="card shadow-drk" style="height:100%">
+                                <div class="card-header "><img class="pending-call-card-img bg-primary" src="/image/user.png"></div>
+                                <div class="card-body">
+                                    
+                                    <h2 class="card-title "><%= customer.name %></h2>
+                                    
+                                    <div class="card-body pl-0 ">
+                                        <h6> <i style="font-size:24px; position:relative; top:5px;" class="fas fa-envelope text-primary"></i> <%= customer.email %> </h6>        
+                                        <h6> <i style="font-size:24px; position:relative; top:5px;" class="fas fa-phone-alt text-primary"></i> <%= customer.mobNo %> </h6>        
+                                    </div>
+                                    
+                                    
+                                </div>
+                                <div class="card-footer  bg-primary"></div>
+                            </div>
+                            
+                        </div>
+                        <% })%>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="closeSrchEngineer"
+                        data-dismiss="modal">Close</button>
+
+                </div>
+            </div>
+        </div>
         </div>
     </body>
 </html>

@@ -1,5 +1,5 @@
 <% include ../partials/header %>
-    <% var total=0, closed=0, pending=0; %>
+    <% var total=0, closed=0, pending=0,imgClass="",callClass=""; %>
     <% calls.forEach(call=>{
         total=total+1;
         if(call.closed){
@@ -8,29 +8,128 @@
             pending=pending+1;
         }
     }) %>
-    <h1>Engineer's HOME </h1>
-    <div style="border:2px solid black;margin-bottom:10px">
-        <h2> Calls Stats </h2>
-        <ul>
-            <li> Total Calls passed to you <b><%= total %></b> </li>
-            <li>  <b><%= pending %></b> calls still Pending. </li>
-            <li>  <b><%= closed %></b> calls are closed by you </li>
-        </ul>
+    <div class="container py-5">
+    <div class="row">
+        <%# Heading Area %>
+         <div class="col-lg-12 mx-auto mb-5  text-center">
+            <h1 class="display-4"><%= curUser.name%>'s Dashboard</h1>
+            <p class="lead mb-0">Place where you can see all stats related to calls passed to you.</p>
+        </div>
 
+        <div class="col-xl-3 col-lg-6 mb-4">
+        <div class="bg-white rounded-lg p-5 shadow-drk">
+            <h2 class="h4 font-weight-bold text-center mb-4">Total Calls Passed to You</h2>
+
+            <div class=" mx-auto text-center" style="width:150px;height:150px">
+                <h2 class="display-2 "><%= total%></h2>
+            </div>
+
+           
+        </div>
+        </div>
+
+        <div class="col-xl-3 col-lg-6 mb-4">
+        <div class="bg-white rounded-lg p-5 shadow-drk">
+            <h2 class="h4 font-weight-bold text-center mb-4">Total Calls Still Pending</h2>
+
+            <!-- Progress bar 2 -->
+            <div class="progress mx-auto" data-value='<%=Math.round(pending/total * 100) %>'>
+            <span class="progress-left">
+                            <span class="progress-bar border-danger"></span>
+            </span>
+            <span class="progress-right">
+                            <span class="progress-bar border-danger"></span>
+            </span>
+            <div class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
+                <div class="display-4 "><%=pending%></div>
+            </div>
+            </div>
+            <!-- END -->
+
+            
+        </div>
+        </div>
+
+        <div class="col-xl-3 col-lg-6 mb-4">
+        <div class="bg-white rounded-lg p-5 shadow-drk">
+            <h2 class="h4 font-weight-bold text-center mb-4">Total Calls Closed</h2>
+
+            <!-- Progress bar 2 -->
+            <div class="progress mx-auto" data-value='<%=Math.round(closed/total * 100) %>'>
+            <span class="progress-left">
+                            <span class="progress-bar border-success"></span>
+            </span>
+            <span class="progress-right">
+                            <span class="progress-bar border-success"></span>
+            </span>
+            <div class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
+                <div class="display-2 "><%=closed%></div>
+            </div>
+            </div>
+            <!-- END -->
+
+           
+        </div>
+        </div>
+        
     </div>
-    <div style="border:2px solid black;margin-bottom:10px;padding:20px;">
-        <h2>All Pending Calls</h2>
-        <% calls.forEach(call=>{%>
+    <div class="row mt-4 mb-4 jumbotron">
+        <div class="col-12 display-4  text-left text-danger mb-4">All Pending Calls</div>
+         <% calls.forEach(call=>{%>
             <% if(!(call.closed)){ %>
-                <div style="box-shadow:0px 0px 10px 4px #a1a1a1;margin-bottom:10px;display:inline-block;width:40%;margin-right:5px;text-align:center; ">
-                    <h4>CallType:- <b><%= call.callType.callType  %></b></h4>
-                    <p>Recieved By: <b><%= call.customer.name %></b></p>
-                    <p><b>Demand : </b> <%= call.demand.slice(0,20) %>...... </p>
-                    <p><b>Recieved At:- </b> <%= call.createdAt %> </p>
-                    <p><a style="text-decoration:none;border:2px green solid;padding:5px;color:green " href="/engineer/call/<%= call._id %>">Handle Call</a></p>
+                <%if(call.callType.callType==="Complaint"){imgClass="red";callClass="danger"}else{imgClass="blue";callClass="primary"}%>
+                <div class="col-xl-3 col-lg-6 mb-5">
+                    <div class="card shadow-drk">
+                    <div class="card-header "><img class="pending-call-card-img" src="image/phone-<%= imgClass %>.png"></div>
+                    <div class="card-body">
+                        
+                        <h4 class="card-title text-<%= callClass %>"><%= call.callType.callType  %> Call</h4>
+                        <h6 class="card-subtitle mb-2 text-muted"><i class="fas fa-calendar-alt"></i> <%= call.createdAt.toLocaleDateString() %>   <i class="fas fa-clock"></i> <%= call.createdAt.toLocaleTimeString() %> </h6>
+                        <div class="card-body pl-0 ">
+                            
+                            <p>  Recieved By: <b class="text-<%= callClass %>"><%= call.customer.name %></b> </p>
+                            <p>  <b>Demand: </b><%= call.demand.slice(0,20) %>...... </p>
+                            
+                        </div>
+                        <a  class="btn btn-outline-<%= callClass %>" href="/engineer/call/<%= call._id %>">Handle Call</a>
+                        
+                    </div>
+                    <div class="card-footer  bg-<%= callClass %>"></div>
+                    </div>
                 </div>
             <% } %>
-        <% }); %>
+    <% }); %>
+        
     </div>
+    </div>
+
     </body>
+    <script>
+        $(function() {
+
+        $(".progress").each(function() {
+
+            var value = $(this).attr('data-value');
+            var left = $(this).find('.progress-left .progress-bar');
+            var right = $(this).find('.progress-right .progress-bar');
+
+            if (value > 0) {
+            if (value <= 50) {
+                right.css('transform', 'rotate(' + percentageToDegrees(value) + 'deg)')
+            } else {
+                right.css('transform', 'rotate(180deg)')
+                left.css('transform', 'rotate(' + percentageToDegrees(value - 50) + 'deg)')
+            }
+            }
+
+        })
+
+        function percentageToDegrees(percentage) {
+
+            return percentage / 100 * 360
+
+        }
+
+        });
+    </script>
 </html>

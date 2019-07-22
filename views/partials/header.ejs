@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://kit.fontawesome.com/c64dd06511.js"></script>
     <link rel="stylesheet" type="text/css" href="/style/main.css" />
 
     <!-- jQuery library -->
@@ -22,7 +22,7 @@
    
 </head>
 <body>
-    <nav class="navbar  navbar-expand-lg  navbar-dark bg-dark shadow">
+    <nav class="navbar  navbar-expand-lg  navbar-dark bg-dark shadow-drk">
     <a class="navbar-brand" href="/">Call's Manager</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -31,7 +31,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav nav nav-pills ml-auto ">
         <li class="nav-item ">
-            <a class="nav-link <% if(locals.isHome){ %> active <% } %>"  href="/">Home <span class="sr-only">(current)</span></a>
+            <a class="p-2 nav-link  <% if(locals.isHome){ %> active <% } %>  "  href="/">Home <span class="sr-only">(current)</span></a>
         </li>
         
 
@@ -42,24 +42,24 @@
             <% if(curUserRole==="Admin"){%>
                 
                 <li class="nav-item">
-                    <a class="nav-link <% if(locals.isADashboard){ %>active<%}%>" href="/admin">Dashboard</a>    
+                    <a class="nav-link p-2 <% if(locals.isADashboard){ %>active<%}%>" href="/admin">Dashboard</a>    
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link <% if(locals.isACalls){ %>active<%}%>" href="/admin/calls">Manage Calls</a>    
+                    <a class="nav-link p-2 <% if(locals.isACalls){ %>active<%}%>" href="/admin/calls">Manage Calls</a>    
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link <% if(locals.isACustomer){ %>active<%}%>" href="/admin/customers">Manage Customers</a>    
+                    <a class="nav-link p-2  <% if(locals.isACustomer){ %>active<%}%>" href="/admin/customers">Manage Customers</a>    
                 </li>
             <%}else if(curUserRole==='Engineer'){ %>
                 <li class="nav-item">
-                    <a class="nav-link <% if(locals.isEDashboard){ %>active<%}%>" href="/engineer">Dashboard</a>    
+                    <a class="nav-link p-2 <% if(locals.isEDashboard){ %>active<%}%>" href="/engineer">Dashboard</a>    
                 </li>
             <% }else{ %>
                 <li class="nav-item">
-                    <a class="nav-link <% if(locals.isCDashboard){ %>active<%}%>" href="/callcenter">Dashboard</a>    
+                    <a class="nav-link p-2 <% if(locals.isCDashboard){ %>active<%}%>" href="/callcenter">Dashboard</a>    
                 </li>
                 <li class="nav-item ">
-                    <a class="nav-link <% if(locals.isCNewCall){ %>active<%}%>" href="/callcenter/newcall">New Call</a>    
+                    <a class="nav-link p-2 <% if(locals.isCNewCall){ %>active<%}%>" href="/callcenter/newcall">New Call</a>    
                 </li>
             <% } %>
             <li class="nav-item">
@@ -67,7 +67,7 @@
             </li>
         <% }else{ %>
             <li class="nav-item">
-                <a class="nav-link <% if(locals.isLogin){ %>active<%}%>" href="/login" >Login</a>
+                <a class="nav-link p-2  <% if(locals.isLogin){ %>active<%}%>" href="/login" >Login</a>
             </li>
         <% } %>        
         </ul>

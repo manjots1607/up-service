@@ -44,6 +44,6 @@ app.use("/callcenter",callCenterRoutes);
 app.use("/engineer",engineerRoutes);
 
 
-app.listen(8000, () => {
+app.listen(process.env.PORT||8000, () => {
     console.log("App Running on port : ", 8000);
 })
