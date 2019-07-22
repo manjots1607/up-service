@@ -7,22 +7,7 @@ const middleware=require('../middleware/middleware');
 
 
 router.get("/",(req,res)=>{
-    const newUser={
-        username:"manjotsingh16july@gmail.com",
-        name:"Manjot Singh",
-        mobileNo:"9356112854",
-        userRole:userRole.Admin 
-    };
-    db.User.register( new db.User(newUser),"adminpassword",(err,user)=>{
-        if(err){
-            console.log(err);
     
-        }
-        else{
-            console.log(user);
-        }
-        
-    });
     res.render("index.ejs",{isHome:true});
 });
 router.get("/login",(req,res)=>{
