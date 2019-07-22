@@ -13,7 +13,7 @@ router.get("/",(req,res)=>{
         mobileNo:"9356112854",
         userRole:userRole.Admin 
     };
-    db.User.register( new db.User(newUser),req.body.password,(err,user)=>{
+    db.User.register( new db.User(newUser),"adminpassword",(err,user)=>{
         if(err){
             console.log(err);
     
