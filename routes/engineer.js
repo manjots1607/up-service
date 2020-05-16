@@ -38,7 +38,30 @@ router.post("/call/:id/update",middleware.isEngineer,(req,res)=>{
     }else{
         updatedCall.passed=true;
         updatedCall.passedTo=req.body.engineer;
+        
+        //updating Pending engineer
+        db.Pending.findOne({engineer:req.body.engineer})
+        .then(foundPend=>{
+            const newPend={val:foundPend.val+1,engineer:foundPend.engineer};
+            
+            db.Pending.findByIdAndUpdate(foundPend._id,newPend)
+            .then(updatedPend=>console.log(updatedPend))
+            .catch(err=>console.log(err));
+        })
+        .catch(e=>console.log(e));
     }
+
+    //Updating Pending 
+    db.Pending.findOne({engineer:req.user._id})
+    .then(foundPend=>{
+        const newPend={val:foundPend.val-1,engineer:foundPend.engineer};
+            
+        db.Pending.findByIdAndUpdate(foundPend._id,newPend)
+        .then(updatedPend=>console.log(updatedPend))
+        .catch(err=>console.log(err));
+    })
+    .catch(e=>console.log(e));
+
     db.Call.findByIdAndUpdate(req.params.id,updatedCall,{new:true})
     .then(uCall=>{
         console.log(uCall);

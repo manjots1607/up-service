@@ -43,6 +43,14 @@ router.post("/register",middleware.isAdmin,(req,res)=>{
     
         }
         else{
+            if(user.userRole===userRole.Engineer){
+                console.log("creating PENDING----------------------");
+                db.Pending.create({engineer:user._id})
+                .then(pend=>{
+                    console.log(pend);
+                }).catch(er=>console.log(er));
+
+            }
             console.log(user);
         }
         return res.redirect("/admin");
@@ -117,6 +125,17 @@ router.post("/api/searchengineer",(req,res)=>{
         console.log(err);
     });
 });
+router.get("/api/getEngineers",middleware.isLogin,function(req,res){
+    db.Pending.find({}).sort("val").limit(1)
+    .then(foundPend=>{
+        
+        db.Pending.find({val:foundPend[0].val})
+        .populate("engineer")
+        .then(finalPend=>res.json(finalPend))
+        .catch(er=>res.send(er));
+    })
+    .catch(err=>res.send(err));
+})
 function escapeRegex(text) {
     return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
 }

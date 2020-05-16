@@ -57,6 +57,15 @@ router.post("/newcall",middleware.isCallCenter,(req,res)=>{
     }else{
         newCall.passed=true;
         newCall.passedTo=req.body.engineer;
+        db.Pending.findOne({engineer:req.body.engineer})
+        .then(foundPend=>{
+            const newPend={val:foundPend.val+1,engineer:foundPend.engineer};
+            
+            db.Pending.findByIdAndUpdate(foundPend._id,newPend)
+            .then(updatedPend=>console.log(updatedPend))
+            .catch(err=>console.log(err));
+        })
+        .catch(e=>console.log(e));
     }
     db.Call.create(newCall)
     .then(newCall=>{
