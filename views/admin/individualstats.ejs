@@ -1,0 +1,259 @@
+<% include ../partials/header %>
+<% var total=0, closed=0, pending=0,imgClass="",callClass=""%>
+    <% sendObj.calls.forEach(call=>{
+        total=total+1;
+        if(call.closed){
+            if(sendObj.userRole=="CallCenterExec" ){
+                if(call.passed){
+                    call.pend=true;
+                    pending=pending+1;
+                }else{
+                    closed=closed+1;
+                }
+            }else{
+                closed=closed+1;
+            }
+        }else{
+            call.pend=true;
+            pending=pending+1;
+        }
+    }) %>
+<div class="container py-5">
+    <div class="row mb-5">
+        <div class="col-lg-12 mx-auto mb-5  text-center">
+            <h1 class="display-4">Statistics of <%= sendObj.empName %></h1>
+        </div>
+        <div class="col-xl-3 col-lg-4  mb-4">
+            <div class="bg-white rounded-lg p-5 shadow-drk">
+                <h2 class="h4 font-weight-bold text-center mb-4">Total Calls <%= sendObj.userRole=="Engineer"?"Passed":"Created" %></h2>
+    
+                <div class=" mx-auto text-center" style="width:150px;height:150px">
+                    <h2 class="display-2 "><%= total%></h2>
+                </div>
+    
+               
+            </div>
+            </div>
+    
+            <div class="col-xl-3 col-lg-4 mb-4">
+            <div class="bg-white rounded-lg p-5 shadow-drk">
+                <h2 class="h4 font-weight-bold text-center mb-4">Total Calls  <%= sendObj.userRole=="Engineer"?"Pending":"Passed" %></h2>
+    
+                <!-- Progress bar 2 -->
+                <div class="progress mx-auto" data-value='<%=Math.round(pending/total * 100) %>'>
+                <span class="progress-left">
+                                <span class="progress-bar border-danger"></span>
+                </span>
+                <span class="progress-right">
+                                <span class="progress-bar border-danger"></span>
+                </span>
+                <div class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
+                    <div class="display-4 "><%=pending%></div>
+                </div>
+                </div>
+                <!-- END -->
+    
+                
+            </div>
+            </div>
+    
+            <div class="col-xl-3 col-lg-4 mb-4">
+            <div class="bg-white rounded-lg p-5 shadow-drk">
+                <h2 class="h4 font-weight-bold text-center mb-4">Total Calls Closed</h2>
+    
+                <!-- Progress bar 2 -->
+                <div class="progress mx-auto" data-value='<%=Math.round(closed/total * 100) %>'>
+                <span class="progress-left">
+                                <span class="progress-bar border-success"></span>
+                </span>
+                <span class="progress-right">
+                                <span class="progress-bar border-success"></span>
+                </span>
+                <div class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
+                    <div class="display-2 "><%=closed%></div>
+                </div>
+                </div>
+                <!-- END -->
+    
+               
+            </div>
+            </div>
+
+    </div>
+    <% if(pending>0){ %>
+    <div class="row mb-5">
+        <div class="col-lg-12 mx-auto mb-5  text-center">
+            <h3 class="text-danger"> <%= sendObj.userRole=="Engineer"?"Pending":"Passed" %> Calls</h3>
+        </div>
+        <table class="table table-hover table-bordered">
+            <thead class="thead-dark">
+              <tr>
+                <th>Call Type</th>
+                <th>Customer Name</th>
+                <th>Created At</th>
+                <th>Link</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% sendObj.calls.forEach(call=>{ 
+                if(call.pend){%>
+                 
+                <tr>
+                    <th><%= call.callType.callType %></th>
+                    <td><%= call.customer.name %></td>
+                    <td><%= call.createdAt.toLocaleDateString() %></td>
+                    <td> <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#a<%= call._id %>">
+                        View Details
+                      </button>
+                    </td>
+                </tr>
+               
+              <% }});%>
+              
+            </tbody>
+          </table>
+    </div>
+    <%} %>
+    <% if(closed>0){ %>
+    <div class="row mb-5">
+        <div class="col-lg-12 mx-auto mb-5  text-center">
+            <h3 class="text-success"> Closed Calls</h3>
+        </div>
+        <table class="table table-hover table-bordered">
+            <thead class="thead-dark">
+              <tr>
+                <th>Call Type</th>
+                <th>Customer Name</th>
+                <th>Created At</th>
+                <th>Link</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% sendObj.calls.forEach(call=>{ 
+                if(!call.pend){%>
+                 
+                <tr>
+                    <th><%= call.callType.callType %></th>
+                    <td><%= call.customer.name %></td>
+                    <td><%= call.createdAt.toLocaleDateString() %></td>
+                    <td> <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#a<%= call._id %>">
+                        More Details
+                      </button>
+                    </td>
+                </tr>
+               
+              <% }});%>
+              
+            </tbody>
+          </table>
+       
+    </div>
+    <% } %>
+    
+</div>
+
+
+<!--Modals Generated For call view -->
+<% sendObj.calls.forEach(call=>{%>
+    <div class="modal fade"  id="a<%= call._id %>" tabindex="-1" role="dialog"  aria-hidden="true">
+        <div class="modal-dialog" style="min-width:80% ;" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" ><%= call.customer.name %>'s Call</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                <div class="row mb-5">
+                    
+                    <div class="col-xl-2"></div>
+                    <div class="col-xl-4 col-lg-6 mb-5 ">
+                        <div class="card shadow-drk">
+            
+                            <div class="card-header "><img class="pending-call-card-img" src="/image/phone-blue.png"></div>
+                            <div class="card-body">
+            
+                                <h4 class="card-title text-primary">Call Details</h4>
+            
+                                <div class="card-body pl-0 ">
+                                    <h6><i class="fas fa-calendar-alt text-primary" style="font-size:22px;width:22px; "></i>
+                                        Recieved
+                                        Date: <b><%= call.createdAt.toLocaleDateString() %></b> </h6>
+                                    <h6><i class="fas fa-clock text-primary" style="font-size:22px;width:22px;"></i> Recieved Time:
+                                        <b><%= call.createdAt.toLocaleTimeString() %></b> </h6>
+                                    <h6><i class="fas fa-phone-alt text-primary" style="font-size:22px;width:22px;"></i> Picked By:
+                                        <b><%= call.createdBy.username %> </b> </h6>
+                                    <h6><i class="fas fa-phone-alt text-primary" style="font-size:22px;width:22px;"></i> Call Type:
+                                        <b><%= call.callType.callType %> </b> </h6>
+                                    <p><i class="fas fa-clipboard text-primary" style="font-size:22px;width:22px;"></i> <b>Demand:
+                                        </b><%= call.demand %></p>
+            
+                                </div>
+            
+            
+                            </div>
+                            <div class="card-footer  bg-primary"></div>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-lg-6 mb-5">
+                        <div class="card  shadow-drk" style="height:100%">
+            
+                            <div class="card-header "><img class="pending-call-card-img" src="/image/user.png"></div>
+            
+                            <div class="card-body">
+            
+                                <h4 class="card-title text-primary">Customer Details</h4>
+                                <div class="card-body">
+                                    <h6><b> Name :</b><%=call.customer.name%></h6>
+                                    <h6><b> Mobile No. : </b><%= call.customer.mobNo %> </h6>
+                                    <h6><b> Email :</b> <%= call.customer.email %> </h6>
+                                    <h6><b> Customer Type : <%= call.customer.customerType %> </b></h6>
+                                </div>
+            
+                            </div>
+                            <div class="card-footer  bg-primary"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+             
+            </div>
+          </div>
+        </div>
+      </div>
+<% });%>
+<!--Modal Defination closed     -->
+
+</body>
+<script>
+    $(function() {
+
+    $(".progress").each(function() {
+
+        var value = $(this).attr('data-value');
+        var left = $(this).find('.progress-left .progress-bar');
+        var right = $(this).find('.progress-right .progress-bar');
+
+        if (value > 0) {
+        if (value <= 50) {
+            right.css('transform', 'rotate(' + percentageToDegrees(value) + 'deg)')
+        } else {
+            right.css('transform', 'rotate(180deg)')
+            left.css('transform', 'rotate(' + percentageToDegrees(value - 50) + 'deg)')
+        }
+        }
+
+    })
+
+    function percentageToDegrees(percentage) {
+
+        return percentage / 100 * 360
+
+    }
+
+    });
+</script>
+</html>

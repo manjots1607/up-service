@@ -7,6 +7,7 @@ const express = require('express'),
     adminRoutes = require("./routes/admin"),
     callCenterRoutes=require("./routes/callcenter"),
     engineerRoutes=require("./routes/engineer"),
+    statsRoutes = require("./routes/stats"),
     db = require('./models/index'),
     bodyParser=require('body-parser'),
     app = express();
@@ -42,6 +43,7 @@ app.use("/", indexRoutes);
 app.use("/admin",adminRoutes);
 app.use("/callcenter",callCenterRoutes);
 app.use("/engineer",engineerRoutes);
+app.use("/stats",statsRoutes);
 
 
 app.listen(process.env.PORT||8000, () => {
