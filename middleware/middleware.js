@@ -10,7 +10,7 @@ module.exports={
             }
         }
         else{
-            return res.send("You are not LOgged in.")
+            return res.redirect("/login");
         }
     },
     isCallCenter:(req,res,next)=>{
@@ -23,7 +23,7 @@ module.exports={
             }
         }
         else{
-            return res.send("You are not LOgged in.")
+            return res.redirect("/login");
         }
     },
     isEngineer:(req,res,next)=>{
@@ -36,7 +36,14 @@ module.exports={
             }
         }
         else{
-            return res.send("You are not LOgged in.")
+            return res.redirect("/login");
+        }
+    },
+    isLogin:(req,res,next)=>{
+        if(req.isAuthenticated()){
+            return next();
+        }else{
+            return res.redirect("/login");
         }
     }
 }
