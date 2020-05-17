@@ -1,8 +1,17 @@
 <% include ./partials/header %>
+<% var total=0,closed=0,pending=0 ;%>
+<% callStats.forEach(c=>{
+    total=total+c.count;
+    if(c._id){
+        closed=closed+c.count;
+    }else{
+        pending = pending + c.count;
+    }
+})  %>
     <div class="container py-5">
-    <div class="row">
+    <div class="row mb-5">
         <div class="col-lg-12 mx-auto mb-5  text-center">
-            <h1 class="display-4">Admin's Home</h1>
+            <h1 class="display-3">Admin's Home</h1>
             
         </div>
         <div class="col-xl-2"></div>
@@ -42,6 +51,68 @@
                 <div class="card-footer  bg-primary"></div>
             </div>
         </div>
+        <div class="col-xl-2"></div>
+
+        <div class="col-12 "><h2 class="text-center p-3" style="font-size:50px; font-weight: 600;"  >Key Stats</h2></div>
+
+        <div class="col-xl-1 ml-xl-4" ></div>
+        <div class="col-xl-3 col-lg-6 mb-4">
+            <div class="bg-white rounded-lg p-5 text-center shadow-drk" style="height: 100%;border-bottom: 15px solid rgb(0, 89, 255);" >
+                <h2 class="h4 font-weight-bold text-center mb-4">Total Calls </h2>
+    
+                <div class=" mx-auto text-center" style="width:150px;height:150px">
+                    <h2 class="display-2 "><%= total%></h2>
+                    
+                </div>
+                <a href="/stats/totalCalls" class="btn btn-outline-primary"> View List</a>
+               
+            </div>
+            </div>
+    
+            <div class="col-xl-3 col-lg-6 mb-4">
+            <div class="bg-white rounded-lg p-5 text-center shadow-drk" style="border-bottom: 15px solid rgb(0, 89, 255);">
+                <h2 class="h4 font-weight-bold text-center mb-4">Total Calls Still Pending</h2>
+    
+                <!-- Progress bar 2 -->
+                <div class="progress mx-auto" data-value='<%=Math.round(pending/total * 100) %>'>
+                <span class="progress-left">
+                                <span class="progress-bar border-danger"></span>
+                </span>
+                <span class="progress-right">
+                                <span class="progress-bar border-danger"></span>
+                </span>
+                <div class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
+                    <div class="display-4 "><%=pending%></div>
+                </div>
+                </div>
+                <!-- END -->
+    
+                <a href="/stats/pendingCalls" class="btn btn-outline-danger mt-2"> View List</a>
+            </div>
+            </div>
+    
+            <div class="col-xl-3 col-lg-6 mb-4">
+            <div class="bg-white rounded-lg p-5  text-center shadow-drk" style="border-bottom: 15px solid rgb(0, 89, 255);">
+                <h2 class="h4 font-weight-bold text-center mb-4">Total Calls Closed</h2>
+    
+                <!-- Progress bar 2 -->
+                <div class="progress mx-auto" data-value='<%=Math.round(closed/total * 100) %>'>
+                <span class="progress-left">
+                                <span class="progress-bar border-success"></span>
+                </span>
+                <span class="progress-right">
+                                <span class="progress-bar border-success"></span>
+                </span>
+                <div class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
+                    <div class="display-2 "><%=closed%></div>
+                </div>
+                </div>
+                <!-- END -->
+
+                <a href="/stats/closedCalls" class="btn btn-outline-success mt-2"> View List</a>
+               
+            </div>
+            </div>
     </div>
     <div class="row  mb-5">
         <div class="col-lg-3"></div>
@@ -176,4 +247,32 @@
         </div>
     </div>
     </body>
+    <script>
+        $(function() {
+
+        $(".progress").each(function() {
+
+            var value = $(this).attr('data-value');
+            var left = $(this).find('.progress-left .progress-bar');
+            var right = $(this).find('.progress-right .progress-bar');
+
+            if (value > 0) {
+            if (value <= 50) {
+                right.css('transform', 'rotate(' + percentageToDegrees(value) + 'deg)')
+            } else {
+                right.css('transform', 'rotate(180deg)')
+                left.css('transform', 'rotate(' + percentageToDegrees(value - 50) + 'deg)')
+            }
+            }
+
+        })
+
+        function percentageToDegrees(percentage) {
+
+            return percentage / 100 * 360
+
+        }
+
+        });
+    </script>
 </html>

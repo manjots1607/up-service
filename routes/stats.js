@@ -26,5 +26,49 @@ router.get("/individual/:id",middleware.isAdmin,(req,res)=>{
         res.redirect("/admin");
     });
 });
-
+router.get("/totalCalls",middleware.isAdmin,(req,res)=>{
+    db.Call.find({})
+    .populate("customer")
+    .populate("callType")
+    .populate("createdBy")
+    .then(foundData=>{    
+        const sendObj={calls:foundData,type:"All"};
+        res.render("admin/statsByType",{sendObj});
+    }).catch(er=>{
+        console.error(er);
+        res.redirect("/admin");
+    });
+        
+    
+});
+router.get("/closedCalls",middleware.isAdmin,(req,res)=>{
+    db.Call.find({closed:true})
+    .populate("customer")
+    .populate("callType")
+    .populate("createdBy")
+    .then(foundData=>{    
+        const sendObj={calls:foundData,type:"Closed "};
+        res.render("admin/statsByType",{sendObj});
+    }).catch(er=>{
+        console.error(er);
+        res.redirect("/admin");
+    });
+        
+    
+});
+router.get("/pendingCalls",middleware.isAdmin,(req,res)=>{
+    db.Call.find({closed:false})
+    .populate("customer")
+    .populate("callType")
+    .populate("createdBy")
+    .then(foundData=>{    
+        const sendObj={calls:foundData,type:"Pending"};
+        res.render("admin/statsByType",{sendObj});
+    }).catch(er=>{
+        console.error(er);
+        res.redirect("/admin");
+    });
+        
+    
+});
 module.exports=router;

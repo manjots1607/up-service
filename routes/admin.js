@@ -11,7 +11,14 @@ router.get("/",middleware.isAdmin,(req,res)=>{
     .then((engineers)=>{
         db.User.find({userRole:userRole.CallCenterExec})
         .then((CallCenterExecs)=>{
-            res.render("admin.ejs",{title:"Admin Home",userRole:userRole,engineers:engineers,CallCenterExecs:CallCenterExecs,isADashboard:true});
+            db.Call.aggregate([{$group:{_id:"$closed",count:{$sum:1}}}])
+            .then(callStats=>{
+
+                res.render("admin.ejs",{title:"Admin Home",userRole:userRole,engineers:engineers,CallCenterExecs:CallCenterExecs,isADashboard:true,callStats});
+            }).catch(er=>{
+                console.log(er);
+                res.send(er);
+            })
         })
         .catch((err)=>{
             console.log(err);
